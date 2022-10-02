@@ -8,7 +8,7 @@ import useHttp from '../../hooks/use-http';
 const AvailableMeals = () => {
   const [meals, setMeals] = useState([]);
 
-  const { isLoading, error: httpError, sendRequest: fetchMeals } = useHttp();
+  const { isLoading, error, sendRequest: fetchMeals } = useHttp();
 
   useEffect(() => {
     const transformMeals = (mealObj) => {
@@ -25,9 +25,12 @@ const AvailableMeals = () => {
       setMeals(loadedMeals);
     };
 
-    fetchMeals({
-      url: 'https://react-vite-complete-api-http-default-rtdb.firebaseio.com/meals.json',
-    },transformMeals);
+    fetchMeals(
+      {
+        url: 'https://react-vite-complete-api-http-default-rtdb.firebaseio.com/meals.json',
+      },
+      transformMeals
+    );
   }, [fetchMeals]);
 
   const mealsList = meals.map((meal) => (
@@ -46,12 +49,12 @@ const AvailableMeals = () => {
         <p>Loading...</p>;
       </section>
     );
-  } 
-  
-  if (httpError) { 
+  }
+
+  if (error) {
     return (
       <section className={classes.MealsError}>
-        <p>{httpError}</p>;
+        <p>{error}</p>;
       </section>
     );
   }
